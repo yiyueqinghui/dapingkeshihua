@@ -1,0 +1,100 @@
+<template>
+  <div id="build">
+       <i v-if="this.routeName === 'index'" class="iconfont iconclose close_pos" title="关闭预览" @click="closePreview"></i>
+       <div class="box" v-for="item in allOptions" :id="item.domId" :style="item.css" :key="item.domId" v-show="item.showStatus" >
+
+       </div>
+  </div>
+</template>
+
+<script>
+import * as echarts from "echarts";
+export default {
+    data(){
+        return {
+            allOptions:[],
+            routeName:''
+
+        }
+    },
+    methods:{
+        getOption(){
+            this.common.axiosPost('/page/get/option',{
+                id:this.$route.params.id
+            }).then(res=>{
+                debugger;
+                if(res.allOptions && res.allOptions.option){
+                   this.allOptions = JSON.parse(res.allOptions.option);
+                   this.initOption();
+                }else{
+                   this.$message.warning('暂无数据!')
+                }
+
+            })
+        },
+        preview(){
+            let allOptions = this.common.deepClone(this.$parent.optionList);
+            /*
+            * 由于同一个页面，无法同时存在两个相同的echarts实例，即不能拥有两个相同的id,所有这里修改数据id。
+            * echarts中，如果同一个页面，有两个相同的id,则浏览器警告如下：
+            * There is a chart instance already initialized on the dom.'
+            */
+            allOptions.forEach(item=>{
+                item.domId = 'preview_'+item.domId;
+            })
+            this.allOptions = allOptions;
+            this.initOption();
+               
+        },
+        initOption(){
+             this.$nextTick(()=>{
+                 this.allOptions.forEach(item=>{
+                    var myChart = echarts.init(document.getElementById(item.domId)); 
+                    var option = item.option;
+                    myChart.setOption(option);                
+                })
+             })
+        },
+        closePreview(){
+            this.$parent.closePreview();
+        }
+        
+
+    },
+    mounted(){
+        let routeName = this.$route.name;
+        this.routeName = routeName;
+        if( routeName === 'build'){
+           this.getOption();
+        }else if(routeName === 'index'){
+           this.preview();
+        }
+        
+
+    },
+
+}
+</script>
+
+<style scoped >
+#build{
+    width:100%;
+    height: 100%;
+    position: relative;
+}
+#build .box{
+    position: absolute;
+    border:1px solid red;
+}
+.close_pos{
+    position:fixed;
+    top: 20px;
+    right:20px;
+    z-index:1000;
+    font-size:35px;
+    color: #ffffff;
+}
+
+
+
+</style>

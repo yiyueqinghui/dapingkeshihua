@@ -1,0 +1,513 @@
+export default {
+  other:[
+    {
+      name:'漏斗图',
+      icon:'iconloudoutu',
+      src:"../../../static/img/echartsIcon/jichu-bar.png",
+      option:{
+        title: {
+          text: '',
+          subtext: ''
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c}%"
+        },
+        toolbox: {
+          feature: {
+            dataView: {readOnly: false},
+            restore: {},
+            saveAsImage: {}
+          }
+        },
+        legend: {
+          data: ['展现','点击','访问','咨询','订单']
+        },
+
+        series: [
+          {
+            name:'漏斗图',
+            type:'funnel',
+            left: '10%',
+            top: 60,
+            //x2: 80,
+            bottom: 60,
+            width: '80%',
+            // height: {totalHeight} - y - y2,
+            min: 0,
+            max: 100,
+            minSize: '0%',
+            maxSize: '100%',
+            sort: 'descending',
+            gap: 2,
+            label: {
+              show: true,
+              position: 'inside'
+            },
+            labelLine: {
+              length: 10,
+              lineStyle: {
+                width: 1,
+                type: 'solid'
+              }
+            },
+            itemStyle: {
+              borderColor: '#fff',
+              borderWidth: 1
+            },
+            emphasis: {
+              label: {
+                fontSize: 20
+              }
+            },
+            data: [
+              {value: 60, name: '访问'},
+              {value: 40, name: '咨询'},
+              {value: 20, name: '订单'},
+              {value: 80, name: '点击'},
+              {value: 100, name: '展现'}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      name:'散点图',
+      icon:'iconsandiantu',
+      src:"../../../static/img/echartsIcon/jichu-bar.png",
+      option:{
+        xAxis: {},
+        yAxis: {},
+        series: [{
+          symbolSize: 20,
+          data: [
+            [10.0, 8.04],
+            [8.07, 6.95],
+            [13.0, 7.58],
+            [9.05, 8.81],
+            [11.0, 8.33],
+            [14.0, 7.66],
+            [13.4, 6.81],
+            [10.0, 6.33],
+            [14.0, 8.96],
+            [12.5, 6.82],
+            [9.15, 7.20],
+            [11.5, 7.20],
+            [3.03, 4.23],
+            [12.2, 7.83],
+            [2.02, 4.47],
+            [1.05, 3.33],
+            [4.05, 4.96],
+            [6.03, 7.24],
+            [12.0, 6.26],
+            [12.0, 8.84],
+            [7.08, 5.82],
+            [5.02, 5.68]
+          ],
+          type: 'scatter'
+        }]
+      }
+    },
+    {
+      name:'玫瑰图',
+      icon:'icontubiao2',
+      src:"../../../static/img/echartsIcon/jichu-bar.png",
+      data: [{
+        "name": "0~1",
+        "value": 73.265162057102
+      }, {
+        "name": "1~2",
+        "value": 33.792891939054684
+      }, {
+        "name": "2~3",
+        "value": 74.5967546467456
+      }, {
+        "name": "3~4",
+        "value": 56.77432385906671
+      }, {
+        "name": "4~5",
+        "value": 16.8002726804912
+      }, {
+        "name": "5~6",
+        "value": 34.57004885024879
+      }, {
+        "name": "6~7",
+        "value": 10.478310737881236
+      }, {
+        "name": "7~8",
+        "value": 75.4161538433161
+      }, {
+        "name": "8~9",
+        "value": 13.35722179829868
+      }, {
+        "name": "9~10",
+        "value": 1.2019619437898088
+      }, {
+        "name": "10~11",
+        "value": 93.37928063166972
+      }, {
+        "name": "11~12",
+        "value": 73.14968515959973
+      }, {
+        "name": "12~13",
+        "value": 36.54964016157945
+      }, {
+        "name": "13~14",
+        "value": 37.043270097378446
+      }, {
+        "name": "14~15",
+        "value": 66.45183159714598
+      }, {
+        "name": "15~16",
+        "value": 18.962805638529368
+      }, {
+        "name": "16~17",
+        "value": 77.43680760491749
+      }, {
+        "name": "17~18",
+        "value": 12.415372277513438
+      }, {
+        "name": "18~19",
+        "value": 45.787294803301414
+      }, {
+        "name": "19~20",
+        "value": 23.877350607625125
+      }, {
+        "name": "20~21",
+        "value": 39.833237879488806
+      }, {
+        "name": "21~22",
+        "value": 61.94184749825171
+      }, {
+        "name": "22~23",
+        "value": 48.2613981191685
+      }, {
+        "name": "23~24",
+        "value": 14.824685497536617
+      }],
+      option:{
+        "title": {
+          "show": false,
+          "text": "",
+          "textStyle": {
+            "color": "#ffffff",
+            "fontSize": 18
+          },
+          "top": "top",
+          "x": "center",
+          "subtext": "",
+          "subtextStyle": {
+            "color": "#ffffff",
+            "fontSize": 15
+          }
+        },
+        "tooltip": {
+          "show": true,
+          "textStyle": {
+            "color": "#fff",
+            "fontSize": 5,
+            "fontWeight": "normal"
+          },
+          "trigger": "item",
+          "backgroundColor": "rgba(50,50,50,0)",
+          "formatter": "{d}%"
+        },
+        "pieColor": [{
+          "color1": "#38B2E6",
+          "$index": 0,
+          "_show": true
+        }],
+        "series": [{
+          "name": "",
+          "type": "pie",
+          "radius": ["5%", "70%"],
+          "roseType": "area",
+          "color": ["rgba(126,255,170,0.7)", "rgba(0,214,255,0.7)"],
+          "data": [{
+            "name": "0~1",
+            "value": 73.265162057102
+          }, {
+            "name": "1~2",
+            "value": 33.792891939054684
+          }, {
+            "name": "2~3",
+            "value": 74.5967546467456
+          }, {
+            "name": "3~4",
+            "value": 56.77432385906671
+          }, {
+            "name": "4~5",
+            "value": 16.8002726804912
+          }, {
+            "name": "5~6",
+            "value": 34.57004885024879
+          }, {
+            "name": "6~7",
+            "value": 10.478310737881236
+          }, {
+            "name": "7~8",
+            "value": 75.4161538433161
+          }, {
+            "name": "8~9",
+            "value": 13.35722179829868
+          }, {
+            "name": "9~10",
+            "value": 1.2019619437898088
+          }, {
+            "name": "10~11",
+            "value": 93.37928063166972
+          }, {
+            "name": "11~12",
+            "value": 73.14968515959973
+          }, {
+            "name": "12~13",
+            "value": 36.54964016157945
+          }, {
+            "name": "13~14",
+            "value": 37.043270097378446
+          }, {
+            "name": "14~15",
+            "value": 66.45183159714598
+          }, {
+            "name": "15~16",
+            "value": 18.962805638529368
+          }, {
+            "name": "16~17",
+            "value": 77.43680760491749
+          }, {
+            "name": "17~18",
+            "value": 12.415372277513438
+          }, {
+            "name": "18~19",
+            "value": 45.787294803301414
+          }, {
+            "name": "19~20",
+            "value": 23.877350607625125
+          }, {
+            "name": "20~21",
+            "value": 39.833237879488806
+          }, {
+            "name": "21~22",
+            "value": 61.94184749825171
+          }, {
+            "name": "22~23",
+            "value": 48.2613981191685
+          }, {
+            "name": "23~24",
+            "value": 14.824685497536617
+          }],
+          "label": {
+            "normal": {
+              "show": false
+            }
+          },
+          "itemStyle": {
+            "normal": {
+              "shadowBlur": 10,
+              "shadowOffsetX": 0,
+              "shadowColor": "rgba(126,255,170, 0.5)"
+            },
+            "emphasis": {
+              "shadowBlur": 10,
+              "shadowOffsetX": 0,
+              "shadowColor": "rgba(0, 0, 0, 0.5)"
+            }
+          }
+        }, {
+          "name": "",
+          "type": "gauge",
+          "min": 0,
+          "max": 24,
+          "startAngle": 90,
+          "endAngle": 449.9,
+          "radius": "82%",
+          "splitNumber": 24,
+          "clockwise": false,
+          "animation": false,
+          "detail": {
+            "show": false
+          },
+          "axisTick": {
+            "show": false
+          },
+          "axisLine": {
+            "lineStyle": {
+              "color": [
+                [1, "#63869e"]
+              ],
+              "width": "100%",
+              "shadowColor": "#0d4b81",
+              "shadowBlur": 40,
+              "opacity": 1
+            }
+          },
+          "splitLine": {
+            "length": 5,
+            "lineStyle": {
+              "color": "#7EFFAA",
+              "width": 2
+            }
+          },
+          "axisLabel": {
+            "textStyle": {
+              "color": "rgb(126,255,170)",
+              "fontSize": 12,
+              "fontWeight": 700
+            }
+          }
+        }, {
+          "name": "",
+          "type": "gauge",
+          "min": 0,
+          "max": 24,
+          "startAngle": 90,
+          "endAngle": 449.9,
+          "radius": "72%",
+          "splitNumber": 24,
+          "clockwise": false,
+          "animation": false,
+          "detail": {
+            "show": false
+          },
+          "axisTick": {
+            "show": false
+          },
+          "axisLine": {
+            "lineStyle": {
+              "color": [
+                [1, "rgba(126,255,170,0.3)"]
+              ],
+              "width": "10%",
+              "opacity": 0.8
+            }
+          },
+          "splitLine": {
+            "show": true,
+            "length": "92%",
+            "lineStyle": {
+              "color": "#888",
+              "width": 1
+            }
+          }
+        }]
+      }
+    },
+    // {
+    //   name:'分面图',
+    //   icon:'icon-bar',
+    //   src:"../../../static/img/echartsIcon/jichu-bar.png",
+    //   data: {
+    //     "series": [{
+    //       "name": "男",
+    //       "data": [-1746181, -1884428, -2089758, -2222362, -2537431, -2507081, -2443179, -2664537, -3556505, -3680231, -3143062, -2721122, -2229181, -2227768, -2176300, -1329968, -836804, -354784, -90569, -28367, -3878]
+    //     }, {
+    //       "name": "女",
+    //       "data": [1656154, 1787564, 1981671, 2108575, 2403438, 2366003, 2301402, 2519874, 3360596, 3493473, 3050775, 2759560, 2304444, 2426504, 2568938, 1785638, 1447162, 1005011, 330870, 130632, 21208]
+    //     }],
+    //     "categories": ["0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85-89", "90-94", "95-99", "100 + "]
+    //   },
+    //   option:{
+    //     "fontSize": 20,
+    //     "chart": {
+    //       "type": "bar",
+    //       "backgroundColor": "rgba(0,0,0,0)",
+    //       "marginBottom": 40,
+    //       "marginTop": 40,
+    //       "marginRight": 40,
+    //       "marginLeft": 50
+    //     },
+    //     "title": {
+    //       "text": "",
+    //       "tempText": "",
+    //       "style": {
+    //         "color": "#ffffff",
+    //         "fontSize": 20
+    //       }
+    //     },
+    //     "subtitle": {
+    //       "text": "",
+    //       "tempText": "",
+    //       "style": {
+    //         "color": "",
+    //         "fontSize": 20
+    //       }
+    //     },
+    //     "legend": {
+    //       "enabled": true,
+    //       "align": "center",
+    //       "verticalAlign": "center",
+    //       "layout": "horizontal",
+    //       "itemStyle": {
+    //         "color": "#ffffff",
+    //         "fontSize": 20
+    //       },
+    //       "x": 0,
+    //       "y": 20
+    //     },
+    //     "xAxis": [{
+    //       "categories": ["0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85-89", "90-94", "95-99", "100 + "],
+    //       "reversed": false,
+    //       "labels": {
+    //         "step": 1,
+    //         "style": {
+    //           "color": "rgba(75,90,107, 1)",
+    //           "fontSize": 16
+    //         }
+    //       }
+    //     }, {
+    //       "opposite": true,
+    //       "reversed": false,
+    //       "categories": ["0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85-89", "90-94", "95-99", "100 + "],
+    //       "linkedTo": 0,
+    //       "labels": {
+    //         "step": 1,
+    //         "style": {
+    //           "color": "rgba(75,90,107, 1)",
+    //           "fontSize": 16
+    //         }
+    //       }
+    //     }],
+    //     "yAxis": {
+    //       "lineColor": "#ffffff",
+    //       "lineWidth": 1,
+    //       "gridLineWidth": 0,
+    //       "reversed": false,
+    //       "labels": {
+    //         "style": {
+    //           "color": "#ffffff",
+    //           "fontSize": 20
+    //         }
+    //       }
+    //     },
+    //     "plotOptions": {
+    //       "series": {
+    //         "stacking": "normal"
+    //       }
+    //     },
+    //     "credits": {
+    //       "enabled": false
+    //     },
+    //     "tooltip": {
+    //       "enabled": true,
+    //       "backgroundColor": "rgba(247,247,247,0.85)",
+    //       "style": {
+    //         "color": "#ffffff",
+    //         "fontSize": 20,
+    //         "fontWeight": "normal"
+    //       }
+    //     },
+    //     "series": [{
+    //       "name": "男",
+    //       "data": [-1746181, -1884428, -2089758, -2222362, -2537431, -2507081, -2443179, -2664537, -3556505, -3680231, -3143062, -2721122, -2229181, -2227768, -2176300, -1329968, -836804, -354784, -90569, -28367, -3878],
+    //       "color": "rgba(0,214,255,1)"
+    //     }, {
+    //       "name": "女",
+    //       "data": [1656154, 1787564, 1981671, 2108575, 2403438, 2366003, 2301402, 2519874, 3360596, 3493473, 3050775, 2759560, 2304444, 2426504, 2568938, 1785638, 1447162, 1005011, 330870, 130632, 21208],
+    //       "color": "rgba(86,221,108,1)"
+    //     }],
+    //     "categories": ["0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85-89", "90-94", "95-99", "100 + "]
+    //   }
+    // }
+
+  ]
+}

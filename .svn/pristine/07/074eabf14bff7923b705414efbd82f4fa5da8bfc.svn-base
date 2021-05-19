@@ -1,0 +1,101 @@
+<template>
+  <div id="right_options">
+      <div class="title">
+           <h4 v-show="navs.option" :class="{active_nav:activeIndex === 0}" :style="{width:navsWidth}" @click="switchTab(0)">配制</h4>
+           <h4 v-show="navs.data" :class="{active_nav:activeIndex === 1}" :style="{width:navsWidth}" @click="switchTab(1)">数据</h4>
+           <h4 v-show="navs.params" :class="{active_nav:activeIndex === 2}" :style="{width:navsWidth}" @click="switchTab(2)">参数</h4>
+      </div>
+      <div class="content self_scroll">
+          <div v-show="activeIndex === 0" class="content_box"> 
+              配制
+          </div>
+          <div v-show="activeIndex === 1" class="content_box">
+              数据
+          </div>
+          <div v-show="activeIndex === 2" class="content_box">
+              参数
+          </div>
+      </div>
+  </div>
+</template>
+
+<script>
+export default {
+    props:{
+       navs:{
+           type:Object,
+           default:()=>{
+               return {
+                   option:true,
+                   data:false,
+                   params:false
+               }
+           }
+       }
+    },
+    data(){
+        return {
+            navsWidth:'0%',
+            activeIndex:0
+            
+
+        }
+    },
+    watch:{
+        navs:{
+            handler(val,oldVal){
+               this.changeNavsLen();
+            },
+            deep:true
+        }
+    },
+    methods:{
+        changeNavsLen(){
+            let length = 0;
+            Object.values(this.navs).forEach(item=>{
+                if(item) length += 1;
+            })
+            this.navsWidth = 100/length + '%';
+        },
+        switchTab(index){
+            this.activeIndex = index;
+        }
+
+    },
+    mounted(){
+        this.changeNavsLen();
+
+    }
+
+}
+</script>
+
+<style scoped>
+#right_options{
+    height: 100%;
+    padding:0;
+}
+.title{
+    font-size:0;
+    height: 43px;
+    line-height: 43px;
+}
+.title h4{
+    display: inline-block;
+    text-align: center;
+    font-size:16px;
+    border-bottom: 2px solid #3c3737;
+}
+.active_nav{
+    color:#409eff;
+    border-bottom: 2px solid #409eff!important;
+}
+.content{
+    padding: 0 10px 10px 10px;
+    margin-top: 10px;
+    height: calc(100% - 45px);
+}
+
+
+
+</style>>

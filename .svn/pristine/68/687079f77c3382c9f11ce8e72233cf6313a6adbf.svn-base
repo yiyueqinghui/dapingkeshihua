@@ -1,0 +1,222 @@
+<template>
+  <div id="right_option_data">
+    <el-form class="form_common" size="small" :model="currentOption" label-width="110px" label-position="left">
+        <el-form-item label="数据类型">
+            <el-select v-model="dataType" placeholder="请选择">
+                <el-option
+                v-for="item in typeList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+                </el-option>
+            </el-select>
+        </el-form-item>
+    </el-form>
+    <!-- 静态数据 -->
+    <el-form v-show="dataType === 1" class="form_common" size="small" :model="currentOption" label-width="110px" label-position="left">
+        <el-form-item label="数据值">
+            <el-button type="primary" size="mini" @click="openCodeEdit">编辑</el-button>
+        </el-form-item>
+    </el-form>
+    <!-- 动态数据 -->
+    <el-form v-show="dataType === 2" class="form_common" size="small" :model="currentOption" label-width="110px" label-position="left">
+        <el-form-item label="接口地址">
+            <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
+        </el-form-item>
+    </el-form>
+
+    <!-- 代码编辑窗口 -->
+    <CodeEdit v-if="codeEditVisible" :value="code" @close="closeCodeEdit" @updateData="updateData"></CodeEdit>
+  </div>
+</template>
+
+<script>
+export default {
+    props:{
+        currentOption:{
+            type:Object
+        }
+    },
+    data(){
+        return {
+            dataType:1,      //动静态数据
+            typeList:[
+                {
+                    label:'静态数据',
+                    value:1
+                },
+                {
+                    label:'动态数据',
+                    value:2
+                }
+            ],
+
+            staticFormData:{},
+            codeEditVisible:false,
+            code:''
+
+
+        }
+    },
+    methods:{
+        // 打开代码编辑组件
+        openCodeEdit(){
+            this.filterData();
+            this.codeEditVisible = true;
+            this.$Store.state.maskVisible = true;
+        },
+        //关闭代码编辑组件
+        closeCodeEdit(){
+            this.codeEditVisible = false;
+            this.$Store.state.maskVisible = false;
+        },
+        // 更新数据
+        updateData(val){
+            this.filterData('update',val);
+            this.closeCodeEdit();
+        },
+        // 筛选出只需修改的数据
+        filterData(status='filter',newOption){
+            let option = this.currentOption.option;
+            if(!option) return;
+            let code = {};
+            //legend图例修改
+            if(option.legend && option.legend.data){
+                if(status === 'filter'){
+                    code['legend'] = {
+                        data:option.legend.data
+                    }
+                }else{
+                    option.legend.data = newOption.legend.data;
+                }
+            }
+
+            //x轴修改
+            if(option.xAxis){
+                let type = this.common.getType(option.xAxis);
+                if(type === 'Array'){
+                    code['xAxis'] = [];
+                    option.xAxis.forEach((item,index)=>{
+                        if(status === 'filter'){
+                            code['xAxis'].push({
+                                data:item.data,
+                                name:item.name
+                            })
+                        }else{
+                            option.xAxis[index]['data'] = newOption.xAxis[index]['data'];
+                            option.xAxis[index]['name'] = newOption.xAxis[index]['name'];
+                        }
+                    })
+
+                }else if(type === 'Object'){
+                    if(status === 'filter'){
+                        code['xAxis'] = {
+                            data:option.xAxis.data,
+                            name:option.xAxis.name
+                        }
+                    }else{
+                        option.xAxis['data'] = newOption.xAxis['data'];
+                        option.xAxis['name'] = newOption.xAxis['name'];
+                    }
+
+
+                }
+                
+            }
+
+             //y轴修改
+            if(option.yAxis){
+                let type = this.common.getType(option.yAxis);
+                if(type === 'Array'){
+                    code['yAxis'] = [];
+                    option.yAxis.forEach((item,index)=>{
+                        if(status === 'filter'){
+                            code['yAxis'].push({
+                                data:item.data,
+                                name:item.name
+                            })
+                        }else{
+                            option.yAxis[index]['data'] = newOption.yAxis[index]['data'];
+                            option.yAxis[index]['name'] = newOption.yAxis[index]['name'];
+                        }
+                    })
+
+                }else if(type === 'Object'){
+                    if(status === 'filter'){
+                        code['yAxis'] = {
+                            data:option.yAxis.data,
+                            name:option.yAxis.name
+                        }
+                    }else{
+                        option.yAxis['data'] = newOption.yAxis['data'];
+                        option.yAxis['name'] = newOption.yAxis['name'];
+                    }
+
+                }
+                
+            }
+
+             //series修改
+            if(option.series){
+                let type = this.common.getType(option.series);
+                if(type === 'Array'){
+                    code['series'] = [];
+                    option.series.forEach((item,index)=>{
+                        if(status === 'filter'){
+                            code['series'].push({
+                                data:item.data,
+                                name:item.name
+                            })
+                        }else{
+                            option.series[index]['data'] = newOption.series[index]['data'];
+                            option.series[index]['name'] = newOption.series[index]['name'];
+                        }
+                    })
+
+                }else if(type === 'Object'){
+                    if(status === 'filter'){
+                        code['series'] = {
+                            data:option.series.data,
+                            name:option.series.name
+                        }
+                    }else{
+                        option.series['data'] = newOption.series['data'];
+                        option.series['name'] = newOption.series['name'];
+                    }
+
+                }
+                
+            }
+
+            console.log(code)
+            if(status === 'filter'){
+                this.code = JSON.stringify(code,null,"\t");
+                console.log(this.code)
+            }
+            console.log(this.currentOption)
+
+        }
+
+    },
+    components:{
+       "CodeEdit":()=>import('../common/codeEdit.vue')
+    },
+    mounted(){
+        console.log('data',this.currentOption) 
+        
+
+    }
+
+}
+</script>
+
+<style scoped>
+#right_option_data{
+    width:100%;
+    height:100%;
+    color: #fff;
+    padding: 10px;
+}
+
+
+</style>

@@ -1,0 +1,126 @@
+<template>
+    <div id="page">
+        <!-- 生产 -->
+        <div class="development" v-show="environment">
+            <!-- 头部 -->
+            <div class="header">
+            <Header @saveOption="saveOption" @preview="openpPreview"></Header>  
+            </div>
+            <div class="main">
+                <!-- 左侧 -->
+                <div class="left">
+                <LeftLayer :optionList="optionList"></LeftLayer>
+                </div>
+                <!-- 主体 -->
+                <div  class="center">
+                    <CenterHome :optionList="optionList"></CenterHome>
+                </div>
+                <!-- 右侧 -->
+                <div  class="right">
+                    <RightOption></RightOption>
+                </div>
+            </div>
+        </div>
+         <!-- 预览 -->
+        <div class="build" v-if="!environment" >
+            <PreviewPage></PreviewPage>
+        </div>
+
+       
+    </div>
+</template>
+
+<script>
+export default {
+    data(){
+        return {
+            environment:true,
+            optionList:[],
+            id:null,
+            option:null
+            
+        }
+    },
+    methods:{
+        addOption(option){
+            let deepCoopyOption =  this.common.deepClone(option);
+            deepCoopyOption.domId = "echart_" + Math.random().toString(16).slice(2);
+            this.optionList.push(deepCoopyOption);
+        },
+        //保存页面配制
+        saveOption(){
+            console.log(this.optionList)
+            this.common.axiosPost('/page/add',{
+                option:JSON.stringify(this.optionList)
+            }).then(res=>{
+                this.$message.success('保存成功!')
+            })
+        },
+        //预览或恢复页面
+        openpPreview(){
+            this.environment = false;
+
+            //全屏
+            var docElm = document.documentElement;  
+            if (docElm.requestFullscreen) {   // w3c
+               docElm.requestFullscreen(); 
+            }else if (docElm.mozRequestFullScreen) {  //FireFox 
+               docElm.mozRequestFullScreen(); 
+            }else if (docElm.webkitRequestFullScreen) {  //Chrome等 
+               docElm.webkitRequestFullScreen(); 
+            } 
+        },
+        closePreview(){
+            this.environment = true;
+        }
+       
+
+    },
+    components:{
+       "Header":()=>import('./header.vue'),
+       "LeftLayer":()=>import('./leftLayer.vue'),
+       "RightOption":()=>import('./rightOption.vue'),
+       "CenterHome":()=>import('../home/index.vue'),
+       "PreviewPage":()=>import('../build/index.vue'),
+    },
+    updated(){
+
+    },
+    mounted(){
+
+    }
+}
+</script>
+
+<style scoped >
+#page {
+    width:100%;
+    height:100%;
+}
+#page .development,
+#page .build {
+    width:100%;
+    height:100%;
+}
+.header{
+    height:70px;
+    background: #212528;
+}
+.main{
+    height: calc(100% - 70px);
+    display: flex;
+}
+.left,.right,.center{
+    height: 100%;
+}
+.left{
+    width: 10%;
+}
+.right{
+    width: 16%;
+}
+.center{
+    width: 74%;
+}
+
+</style>

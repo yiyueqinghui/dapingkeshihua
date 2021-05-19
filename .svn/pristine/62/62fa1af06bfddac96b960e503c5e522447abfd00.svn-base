@@ -1,0 +1,45 @@
+import barOptions from './barOptions.js'
+
+export default {
+    list:[
+        {
+            type:'2D图表',
+            icon:'icontubiao',
+            child:[
+                {
+                    type:'柱状图',
+                    icon:'icontubiao2',
+                    child:barOptions.bar
+                },
+                {
+                    type:'拆线图',
+                    icon:'icontubiao2',
+                    child:barOptions.line
+                }
+            ]
+
+        },
+        {
+            type:'2D图表1',
+            icon:'icontubiao',
+            child:[
+                {
+                    type:'柱状图',
+                    icon:'icontubiao2',
+                    child:barOptions.bar
+                },
+                {
+                    type:'柱状图1',
+                    icon:'icontubiao2',
+                    child:barOptions.bar
+                },
+                {
+                    type:'柱状图1',
+                    icon:'icontubiao2',
+                    child:barOptions.line
+                }
+            ]
+
+        }
+    ]
+}

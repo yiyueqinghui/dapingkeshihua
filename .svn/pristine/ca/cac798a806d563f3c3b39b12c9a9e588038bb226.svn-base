@@ -1,0 +1,133 @@
+<template>
+  <div id="home">
+    <DragResizeComp
+      v-for="(item) in optionList"
+      :key="item.domId"
+      :ref="item.domId"
+      :optionObj="item"
+    >
+      <div
+        :id="item.domId"
+        class="echarts_box"
+        @contextmenu.prevent="onContextmenu"
+      ></div>
+    </DragResizeComp>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    optionList: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+  },
+  data() {
+    return {
+      rowSize: 1,
+      colSize: 1,
+    };
+  },
+  methods: {
+    initPageSize() {
+      let homeDom = document.getElementById("home"),
+        pageW = Number(
+          window.getComputedStyle(homeDom).width.replace("px", "")
+        ),
+        pageH = Number(
+          window.getComputedStyle(homeDom).height.replace("px", "")
+        );
+      this.rowSize = this.common.toDecimal(this.screenWidth / pageW, 4);
+      this.colSize = this.common.toDecimal(this.screenHeight / pageH, 4);
+    },
+    //右键菜单
+    onContextmenu(event) {
+      console.log(event);  
+      let id = this.activeDragResize(event);
+      this.$contextmenu({
+        items: [
+          {
+            label: "删除图层",
+            icon:'iconfont iconclose-bold',
+            onClick: this.deleteMenu.bind(this,id)
+          },
+          {
+            label: "上移图层",
+            icon:'iconfont icontop1',
+            onClick: this.posTopMenu.bind(this,id)
+          },
+          {
+            label: "下移图层",
+            icon:'iconfont iconbottom',
+            onClick: this.posBottomMenu.bind(this,id)
+          }
+        ],
+        event,
+        customClass: "right_menu",
+        zIndex: 300,
+        minWidth: 110,
+      });
+      return false;
+    },
+    // 删除图层
+    deleteMenu(id){
+      this.$parent.removeOption(id);
+      this.$message.success('删除成功!')
+    },
+    // 上移图层
+    posTopMenu(id){
+      this.$parent.upRemoveOption(id);
+      this.$message.warning('功能开发中。。。')
+    },
+    // 下移图层
+    posBottomMenu(id){
+      this.$parent.downRemoveOption(id);
+      this.$message.warning('功能开发中。。。')
+    },
+    // 激活缩放窗口
+    activeDragResize(target){
+      let dragDom = target.path.find(ele=>{ 
+         return ele.className === 'echarts_box'
+      });
+      let id = dragDom.id;
+      this.$refs[id][0].activeDrag(id)
+      return id;
+    }
+  },
+  computed: {
+    screenWidth() {
+      return this.$Store.state.globalOption.width;
+    },
+    screenHeight() {
+      return this.$Store.state.globalOption.height;
+    },
+  },
+  components: {
+    DragResizeComp: () => import("./dragResizeComp.vue"),
+  },
+  watch:{
+   
+    
+  },
+  mounted() {
+    this.initPageSize();
+  },
+};
+</script>
+
+<style scoped >
+#home {
+  width: 100%;
+  height: 100%;
+  background: url("../../../static/img/home/bg.png") repeat left top;
+  position: relative;
+}
+.echarts_box {
+  width: 100%;
+  height: 100%;
+}
+
+</style>

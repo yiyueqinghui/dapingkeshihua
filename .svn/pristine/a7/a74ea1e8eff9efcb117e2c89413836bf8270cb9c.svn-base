@@ -1,0 +1,215 @@
+<template>
+    <div id="page">
+        <!-- 生产 -->
+        <div class="development" v-show="environment">
+            <!-- 头部 -->
+            <div class="header">
+            <Header @saveOption="saveOption" @preview="openpPreview"></Header>  
+            </div>
+            <div class="main">
+                <!-- 左侧 -->
+                <div class="left" @click="preventDeact(true)">
+                <LeftLayer :optionList="optionList" ></LeftLayer>
+                </div>
+                <!-- 主体 -->
+                <div  class="center" @click="preventDeact(false)">
+                    <CenterHome :optionList="optionList"></CenterHome>
+                </div>
+                <!-- 右侧 -->
+                <div  class="right" @click="preventDeact(true)">
+                    <RightOption :currentOption="currentOption" :navs='navs'></RightOption>
+                </div>
+            </div>
+        </div>
+         <!-- 预览 -->
+        <div class="build" v-if="!environment" >
+            <PreviewPage></PreviewPage>
+        </div>
+
+       
+    </div>
+</template>
+
+<script>
+export default {
+    provide(){
+        return {
+           getCurrentOption:this.getCurrentOption
+
+        }
+    },
+    data(){
+        return {
+            environment:true,
+            optionList:[],
+            currentOption:{},
+            navs:{},
+            id:null,
+            option:null
+            
+        }
+    },
+    methods:{
+        preventDeact(status){
+           this.$Store.state.preventDeactivation = status;
+        },
+        addOption(option){
+            let deepCoopyOption =  this.common.deepClone(option);
+            deepCoopyOption.domId = "echart_" + Math.random().toString(16).slice(2);
+            deepCoopyOption.showStatus = true;
+            this.optionList.push(deepCoopyOption);
+        },
+        //删除图层
+        removeOption(id){
+            let index = this.locationOptionById(id);
+            if(index>=0) this.optionList.splice(index,1);
+        },
+        //根据id,定位option的下标
+        locationOptionById(id){
+            let index = -1;
+            this.optionList.forEach((element,key) => {
+                if(element.domId === id) index = key;
+            });
+            return index;
+        },
+        //上移图层
+        upRemoveOption(id){
+            let index = this.locationOptionById(id);
+            if(index>=0){
+                let option = this.optionList[index];
+                option['css']['z-index'] = option['css']['z-index'] + 10;
+                this.optionList.splice(index,1,option);
+            }
+
+        },
+        //下移图层
+        downRemoveOption(id){
+            let index = this.locationOptionById(id);
+            if(index>=0){
+                let option = this.optionList[index];
+                let zIndex = option['css']['z-index'];
+                option['css']['z-index'] = zIndex - 10 >= 10 ? zIndex - 10 : 10 ;
+                this.optionList.splice(index,1,option);
+            }
+
+        },
+        //控制显示/隐藏图层
+        showOrHideLayer(index){
+            if(index>=0){
+                let option = this.optionList[index];
+                let zIndex = option['showStatus'];
+                option['showStatus'] = !option['showStatus'];
+                this.optionList.splice(index,1,option);
+            }
+
+        },
+        //保存页面配制
+        saveOption(){
+            console.log(this.optionList)
+            this.common.axiosPost('/page/add',{
+                option:JSON.stringify(this.optionList)
+            }).then(res=>{
+                this.$message.success('保存成功!')
+            })
+        },
+        //激活后获取当前option
+        getCurrentOption(data){
+           if(data.hasOwnProperty('domId')){
+              this.navs = {
+                   option:true,
+                   data:false,
+                   params:false
+              }
+           }else{
+              this.navs = {
+                   option:false,
+                   data:false,
+                   params:false
+              }
+           }
+           this.currentOption = data;
+        },
+        //进入全屏
+        enterFullScreen(){
+            var docElm = document.documentElement;  
+            if (docElm.requestFullscreen) {   // w3c
+               docElm.requestFullscreen(); 
+            }else if (docElm.mozRequestFullScreen) {  //FireFox 
+               docElm.mozRequestFullScreen(); 
+            }else if (docElm.webkitRequestFullScreen) {  //Chrome等 
+               docElm.webkitRequestFullScreen(); 
+            } 
+        },
+        //预览或恢复页面
+        openpPreview(){
+            this.environment = false;
+            this.enterFullScreen();
+        },
+        closePreview(){
+           this.exitFullScreen();
+           this.environment = true;
+
+        },
+        // 退出全屏
+        exitFullScreen(){
+           if (document.exitFullscreen) { 
+                document.exitFullscreen(); 
+           }else if (document.mozCancelFullScreen) { 
+               document.mozCancelFullScreen(); 
+           }else if (document.webkitCancelFullScreen) { 
+               document.webkitCancelFullScreen(); 
+           }else if (document.msExitFullscreen) { 
+               document.msExitFullscreen(); 
+           } 
+        }
+       
+
+    },
+    components:{
+       "Header":()=>import('./header.vue'),
+       "LeftLayer":()=>import('./leftLayer.vue'),
+       "RightOption":()=>import('./rightOption.vue'),
+       "CenterHome":()=>import('../home/index.vue'),
+       "PreviewPage":()=>import('../build/index.vue'),
+    },
+    updated(){
+
+    },
+    mounted(){
+
+    }
+}
+</script>
+
+<style scoped >
+#page {
+    width:100%;
+    height:100%;
+}
+#page .development,
+#page .build {
+    width:100%;
+    height:100%;
+}
+.header{
+    height:70px;
+    background: #212528;
+}
+.main{
+    height: calc(100% - 70px);
+    display: flex;
+}
+.left,.right,.center{
+    height: 100%;
+}
+.left{
+    width: 10%;
+}
+.right{
+    width: 16%;
+}
+.center{
+    width: 74%;
+}
+
+</style>
